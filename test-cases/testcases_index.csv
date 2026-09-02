@@ -1,0 +1,129 @@
+CaseID,API,Category,AuditLabel,Automated,BugRef
+P-01,Profile,Happy,VALID,Y,
+P-02,Profile,Happy/Schema,VALID,Y,
+P-03,Profile,Security SEC-01,VALID,Y,BUG-P1
+P-04,Profile,Boundary,VALID,N,
+P-05,Profile,Boundary,VALID,N,
+P-06,Profile,Boundary,VALID-expfail,N,BUG-P3
+P-07,Profile,Boundary,VALID-expfail,N,BUG-P3
+P-08,Profile,Negative,VALID-expfail,N,BUG-P3
+P-09,Profile,Negative,VALID-expfail,N,BUG-P3
+P-10,Profile,Negative,VALID-expfail,N,BUG-P3
+P-11,Profile,Boundary,VALID,N,
+P-12,Profile,Boundary,VALID,N,
+P-13,Profile,Negative,VALID-expfail,N,BUG-P3
+P-14,Profile,Negative,INCOMPLETE-corrected,N,BUG-P4
+P-15,Profile,Negative,VALID-expfail,N,BUG-P3
+P-16,Profile,Negative,INCOMPLETE-corrected,N,BUG-P4
+P-17,Profile,Happy,VALID,N,
+P-18,Profile,Security SEC-06,VALID,Y,BUG-P2
+P-19,Profile,Security SEC-06,VALID,N,BUG-P2
+P-20,Profile,Security SEC-06,VALID,Y,BUG-P2
+P-21,Profile,Security SEC-02,VALID,Y,
+P-22,Profile,Security SEC-02,INCOMPLETE-corrected,Y,
+P-23,Profile,Security SEC-02,INCOMPLETE-corrected,N,
+P-24,Profile,Security SEC-02,VALID,N,
+P-25,Profile,Security SEC-05,VALID,Y,
+P-26,Profile,Security SEC-05,VALID,N,
+P-27,Profile,Security SEC-04,VALID,N,
+P-28,Profile,Schema,VALID,N,
+P-29,Profile,Schema,VALID,N,
+P-30,Profile,State,VALID,N,
+P-31,Profile,Negative,INCOMPLETE-corrected,N,BUG-P4
+P-32,Profile,Negative,VALID-expfail,N,BUG-P3
+P-33,Profile,Negative,VALID-expfail,N,BUG-P3
+P-34,Profile,Security IDOR,INVALID-removed,N,
+P-35,Profile,Happy,VALID,N,
+P-36,Profile,Boundary,INCOMPLETE,N,
+P-37,Profile,Schema,VALID,N,
+P-38,Profile,Negative,VALID-expfail,N,BUG-P3
+EX-P1,Profile,Security SEC-01,Extension,N,BUG-P1
+EX-P2,Profile,Security SEC-06,Extension,N,BUG-P2
+EX-P3,Profile,Security IDOR,Extension,N,
+EX-P4,Profile,State,Extension,N,BUG-P4
+EX-P5,Profile,Security,Extension,N,
+C-01,Coupon,Happy,VALID,Y,
+C-02,Coupon,Happy,VALID,Y,
+C-03,Coupon,Formula,VALID-expfail,Y,BUG-C1
+C-04,Coupon,Boundary C3,VALID-expfail,Y,BUG-C2
+C-05,Coupon,Boundary C3,VALID,N,
+C-06,Coupon,Boundary C3,VALID,N,
+C-07,Coupon,Boundary C3,VALID,N,
+C-08,Coupon,Negative C1,VALID,Y,
+C-09,Coupon,Negative C2,VALID,Y,
+C-10,Coupon,Negative C1,VALID,Y,
+C-11,Coupon,Negative C1,VALID,N,
+C-12,Coupon,Negative,INCOMPLETE-corrected,N,
+C-13,Coupon,Boundary,VALID,N,
+C-14,Coupon,Negative,VALID,N,
+C-15,Coupon,Negative,VALID,N,
+C-16,Coupon,Negative,VALID,N,
+C-17,Coupon,Boundary,VALID-expfail,N,BUG-C1
+C-18,Coupon,State C5,VALID,N,
+C-19,Coupon,State C5,INCOMPLETE-corrected,N,
+C-20,Coupon,State C5,VALID,N,
+C-21,Coupon,State C5,INCOMPLETE-corrected,N,
+C-22,Coupon,Security SEC-02,VALID,Y,BUG-C3
+C-23,Coupon,Security IDOR,VALID,N,BUG-C4
+C-24,Coupon,Security IDOR,VALID,N,BUG-C4
+C-25,Coupon,Security SEC-05,VALID,Y,
+C-26,Coupon,Security SEC-05,VALID,N,
+C-27,Coupon,Schema,VALID,Y,
+C-28,Coupon,Schema,VALID,N,
+C-29,Coupon,Schema/Invariant,VALID,N,
+C-30,Coupon,Schema,VALID,N,
+C-31,Coupon,State,VALID,N,
+C-32,Coupon,State,VALID,N,
+C-33,Coupon,Negative,VALID,N,
+C-34,Coupon,Boundary,VALID-expfail,N,BUG-C2
+C-35,Coupon,Negative,INCOMPLETE-corrected,N,
+C-36,Coupon,Security SEC-05,VALID,N,
+C-37,Coupon,Schema,VALID,N,
+EX-C1,Coupon,Invariant,Extension,N,BUG-C1
+EX-C2,Coupon,Security SEC-02,Extension,N,BUG-C3
+EX-C3,Coupon,Security IDOR,Extension,N,BUG-C4
+EX-C4,Coupon,Boundary/Precision,Extension,N,
+EX-C5,Coupon,State,Extension,N,
+PR-01,Product,Happy,VALID,Y,
+PR-02,Product,Happy/Schema,VALID,Y,
+PR-03,Product,Happy,VALID,Y,
+PR-04,Product,State lifecycle,VALID,Y,
+PR-05,Product,State lifecycle,VALID,N,
+PR-06,Product,Boundary,VALID,N,
+PR-07,Product,Boundary,VALID,N,
+PR-08,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-09,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-10,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-11,Product,Boundary,VALID,N,
+PR-12,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-13,Product,Negative,VALID-expfail,Y,BUG-PR2
+PR-14,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-15,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-16,Product,Negative,INCOMPLETE-corrected,N,BUG-PR2
+PR-17,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-18,Product,Negative,VALID-expfail,N,BUG-PR2
+PR-19,Product,Security SEC-03,VALID-expfail,Y,BUG-PR1
+PR-20,Product,Security SEC-02,VALID-expfail,Y,BUG-PR1
+PR-21,Product,Security SEC-02,VALID-expfail,N,BUG-PR1
+PR-22,Product,Security SEC-02,VALID-expfail,N,BUG-PR1
+PR-23,Product,Security SEC-03,VALID-expfail,N,BUG-PR1
+PR-24,Product,Security SEC-02,VALID-expfail,N,BUG-PR1
+PR-25,Product,Security SEC-05,VALID,Y,BUG-PR3
+PR-26,Product,Security SEC-05,VALID,Y,
+PR-27,Product,Security SEC-04,VALID,N,
+PR-28,Product,Schema,VALID,Y,
+PR-29,Product,Schema,VALID,N,
+PR-30,Product,Schema,VALID,N,BUG-PR5
+PR-31,Product,Negative,VALID,Y,BUG-PR4
+PR-32,Product,Negative,INCOMPLETE-corrected,N,BUG-PR4
+PR-33,Product,Isolation,VALID,N,
+PR-34,Product,Happy,VALID,N,
+PR-35,Product,Schema,VALID,N,
+PR-36,Product,Negative,INCOMPLETE-corrected,N,BUG-PR4
+PR-37,Product,Negative,VALID,N,
+PR-38,Product,Security SEC-05,VALID,N,
+EX-PR1,Product,Security SEC-03,Extension,N,BUG-PR1
+EX-PR2,Product,Security SEC-05,Extension,N,BUG-PR3
+EX-PR3,Product,Integrity,Extension,N,
+EX-PR4,Product,Idempotency,Extension,N,BUG-PR4
+EX-PR5,Product,Integrity,Extension,N,BUG-PR2
