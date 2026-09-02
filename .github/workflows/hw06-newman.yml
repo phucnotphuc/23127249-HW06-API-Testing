@@ -13,7 +13,7 @@ on:
   workflow_dispatch: {}
 
 env:
-  COLLECTION: eshop-hw06.postman_collection.json   # <-- set to *-FAIL* for the red run
+  COLLECTION: eshop-hw06-FAIL.postman_collection.json   # <-- red run: spec-correct coupon math fails on buggy SUT (BUG-C1)
 
 jobs:
   api-tests:
