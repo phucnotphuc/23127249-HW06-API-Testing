@@ -1,0 +1,71 @@
+name: HW06 API Tests (Newman)
+
+# Two demonstrated runs (assignment §6):
+#   - COLLECTION = eshop-hw06.postman_collection.json        -> all pass  (green commit)
+#   - COLLECTION = eshop-hw06-FAIL.postman_collection.json   -> one fail  (red commit)
+# Flip COLLECTION below in the "one failing" sample commit.
+
+on:
+  push:
+    paths:
+      - "collections/**"
+      - ".github/workflows/hw06-newman.yml"
+  workflow_dispatch: {}
+
+env:
+  COLLECTION: eshop-hw06.postman_collection.json   # <-- set to *-FAIL* for the red run
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: { node-version: "20" }
+
+      - name: Clone EShop SUT
+        run: git clone --depth 1 https://github.com/ttbhanh/eshop-sut.git sut
+
+      - name: Install + seed backend
+        working-directory: sut/backend
+        run: |
+          npm install
+          node database.js
+
+      - name: Start backend
+        working-directory: sut/backend
+        run: node server.js &
+
+      - name: Wait for :3000
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000/api/products >/dev/null; then
+              echo "SUT up"; exit 0
+            fi
+            sleep 1
+          done
+          echo "SUT did not start"; exit 1
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Newman
+        run: |
+          newman run "collections/$COLLECTION" \
+            -e "collections/eshop-hw06.postman_environment.json" \
+            --env-var baseUrl=http://localhost:3000 \
+            -r cli,htmlextra,junit \
+            --reporter-htmlextra-export "reports/ci-newman-report.html" \
+            --reporter-junit-export "reports/ci-newman-junit.xml"
+
+      - name: Upload report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: reports/ci-*
+          retention-days: 14
