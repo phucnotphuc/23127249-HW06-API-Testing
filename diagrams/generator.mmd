@@ -1,0 +1,13 @@
+flowchart TD
+    A[API Specification\napi_specification.md] --> B[1. Parse endpoints\nmethod, path, body, auth]
+    B --> C[2. Extract variables\nper parameter: type, rule, domain]
+    C --> D[3. Partition domains\nvalid / invalid classes + boundaries]
+    C --> E[4. Load rule packs\nSEC-01..07, state machine, schema]
+    D --> F[5. Scenario synthesis\nhappy x boundary x negative x security x schema]
+    E --> F
+    F --> G[6. Oracle binding\nstatus + body value + invariant + deny-list]
+    G --> H[7. Emit cases\nPostman requests + pm.test]
+    H --> I[8. Self-check\nno dup, every param covered, >=35]
+    I -->|gaps| F
+    I -->|ok| J[9. Human audit gate\nVALID / INVALID / INCOMPLETE]
+    J --> K[Collection .json + test-cases .md]
