@@ -1,0 +1,27 @@
+HW06 — Git commit log (one commit per procedure step)
+Student: 23127249
+
+The submission is built in these logical commits (assignment §12). Run
+`bash make_commits.sh` from repo root to create them on branch `hw06`, then
+`git log --oneline` fills the actual hashes below.
+
+Planned commits
+---------------
+hw6: scaffold submission structure + install newman tooling
+hw6(api1): generate profile test cases (staged AI pipeline)
+hw6(api1): human audit VALID/INVALID/INCOMPLETE + 5 extensions
+hw6(api2): generate coupon test cases (staged AI pipeline)
+hw6(api2): human audit + 5 extensions
+hw6(api3): generate product CRUD test cases (staged AI pipeline)
+hw6(api3): human audit + 5 extensions
+hw6(exec): Postman collection + environment + data files + generator
+hw6(exec): Newman green run + HTML report
+hw6(bugs): bug report (12 defects) + GitHub issue script
+hw6(gen): AI test-generator design (diagram + pseudocode) + agent skill
+hw6(ci): newman all-pass run
+hw6(ci): demonstrate failing test (BUG-C1)
+hw6(docs): main report + AI audit + AI critique + README + git log
+
+Actual log (paste output of `git log --oneline -14` after make_commits.sh)
+--------------------------------------------------------------------------
+<fill after running make_commits.sh>
