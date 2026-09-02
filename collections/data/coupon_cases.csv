@@ -1,0 +1,10 @@
+code,total_amount,user_id,expectedStatus,note
+BIGBUY,600000,2,200,fixed 50k happy
+VIP100,400000,2,200,fixed 100k happy
+SAVE10,500000,2,200,percent (BUG-C1 negative discount)
+SAVE10,300000,2,400,boundary ==min (BUG-C2 should be 200)
+SAVE10,299999,2,400,below min
+NOPE,600000,2,404,unknown code
+EXPIRED,200000,2,400,expired
+,600000,2,400,empty code
+BIGBUY,400000,2,400,below its 500k min

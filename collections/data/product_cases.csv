@@ -1,0 +1,7 @@
+name,price,category_id,expectedStatus,note
+Ao Thun QA,150000,3,200,happy
+A,1,1,200,min name+price
+,150000,1,400,empty name
+bad,0,1,400,price zero
+bad,-5000,1,400,negative price
+bad,150000,9999,400,nonexistent category

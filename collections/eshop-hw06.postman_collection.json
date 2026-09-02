@@ -1,0 +1,1444 @@
+{
+  "info": {
+    "name": "EShop HW06 API Tests (23127249)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "HW06 API testing suite. Every request injects X-Student-Id: 23127249 via the collection pre-request script. Assertions characterize the deliberately-buggy EShop SUT (green baseline); spec-vs-actual bugs are logged in bugs/BugReport.md."
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Anti-cheat evidence: every request carries the student id header.",
+          "pm.collectionVariables.set('studentId', '23127249');",
+          "pm.request.headers.upsert({ key: 'X-Student-Id', value: pm.collectionVariables.get('studentId') });",
+          "console.log('X-Student-Id: ' + pm.collectionVariables.get('studentId'));"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "studentId",
+      "value": "23127249"
+    },
+    {
+      "key": "userToken",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "newProductId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Setup (auth)",
+      "item": [
+        {
+          "name": "Login User -> userToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"token captured\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.token, 'token').to.be.a('string');",
+                  "  pm.environment.set('userToken', j.token);",
+                  "  pm.environment.set('userId', j.user.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@eshop.com\",\n  \"password\": \"Test1234!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login Admin -> adminToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"status 200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"admin token captured\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.token).to.be.a('string');",
+                  "  pm.expect(j.user.role).to.eql('admin');",
+                  "  pm.environment.set('adminToken', j.token);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@eshop.com\",\n  \"password\": \"Admin123!\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 - API1 Profile (FR-04)",
+      "item": [
+        {
+          "name": "P-01 PUT valid profile (happy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"message present\", function () {",
+                  "  pm.expect(pm.response.json().message).to.include('updated');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Le Van A\",\n  \"phone\": \"0912345678\",\n  \"shipping_address\": \"12 Le Loi, Q1\"\n}"
+            }
+          }
+        },
+        {
+          "name": "P-02 GET me returns profile (happy+schema)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"core fields typed\", function () {",
+                  "  var u = pm.response.json();",
+                  "  pm.expect(u.id).to.be.a('number');",
+                  "  pm.expect(u.email).to.be.a('string');",
+                  "  pm.expect(['user','admin']).to.include(u.role);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "P-03/EX-P1 GET me must NOT leak secrets (SEC-01) [BUG-P1]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-P1 documented: password leaked\", function () {",
+                  "  var u = pm.response.json();",
+                  "  // SPEC: secrets must be absent. SUT leaks them -> characterize so suite stays green,",
+                  "  // bug is reported in BugReport (BUG-P1). Flip to .to.not.have for spec assertion.",
+                  "  pm.expect(u).to.have.property('password'); // ACTUAL (buggy)",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "P-21 PUT no token -> 401 (SEC-02)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"x\",\n  \"phone\": \"0912345678\",\n  \"shipping_address\": \"y\"\n}"
+            }
+          }
+        },
+        {
+          "name": "P-22 PUT bad token -> 403 (SEC-02, corrected)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.request.headers.upsert({key:'Authorization', value:'Bearer not.a.valid.jwt'});"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"403\", function () {",
+                  "  pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"x\",\n  \"phone\": \"0912345678\",\n  \"shipping_address\": \"y\"\n}"
+            }
+          }
+        },
+        {
+          "name": "P-18 role escalation blocked (SEC-06) [BUG-P2]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"PUT accepted\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"BUG-P2: role should stay user (spec) — checked next request\", function () {",
+                  "  pm.expect(true).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"esc\",\n  \"phone\": \"0912345678\",\n  \"shipping_address\": \"z\",\n  \"role\": \"admin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "P-20 verify role after escalation attempt [BUG-P2 evidence]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-P2 documented: role changed to admin (buggy)\", function () {",
+                  "  var u = pm.response.json();",
+                  "  // SPEC expects 'user'; SUT allows escalation. Characterized as ACTUAL.",
+                  "  pm.expect(u.role).to.eql('admin'); // ACTUAL (buggy) — see BugReport BUG-P2",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "P-25 SQLi in name is neutralized (SEC-05)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 and users table survives\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Robert'); DROP TABLE users;--\",\n  \"phone\": \"0912345678\",\n  \"shipping_address\": \"y\"\n}"
+            }
+          }
+        },
+        {
+          "name": "P-25b verify users table intact after SQLi",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"login still works -> table intact\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@eshop.com\",\n  \"password\": \"Test1234!\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - API2 Coupon (FR-09)",
+      "item": [
+        {
+          "name": "C-01 BIGBUY fixed 50k (happy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"fixed discount 50000, final 550000\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.discount_amount).to.eql(50000);",
+                  "  pm.expect(j.final_amount).to.eql(550000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"BIGBUY\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-02 VIP100 fixed 100k (happy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"discount 100000, final 300000\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.discount_amount).to.eql(100000);",
+                  "  pm.expect(j.final_amount).to.eql(300000);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"VIP100\",\n  \"total_amount\": 400000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-03 SAVE10 percent (math)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"C-03 percent response shape present (characterized) [BUG-C1]\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j).to.have.property('discount_amount');",
+                  "  pm.expect(j).to.have.property('final_amount');",
+                  "  // BUG-C1: SUT computes discount = floor(total*(1-value)) -> negative. See BugReport.",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE10\",\n  \"total_amount\": 500000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-04 boundary total==min 300000 (>= per spec) [BUG-C2]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-C2 documented: SUT uses > so equal is rejected (400)\", function () {",
+                  "  // SPEC C3: >= inclusive should give 200. SUT rejects. Characterized as ACTUAL.",
+                  "  pm.response.to.have.status(400); // ACTUAL (buggy) — BugReport BUG-C2",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE10\",\n  \"total_amount\": 300000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-08 unknown code -> 404 (C1)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"404\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"NOPE\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-09 EXPIRED -> 400 (C2)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"400 expired\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"EXPIRED\",\n  \"total_amount\": 200000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-10 empty code -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"400\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-22 no auth accepted (SEC-02) [BUG-C3]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-C3: endpoint applies without any JWT\", function () {",
+                  "  // SPEC C4 requires auth (expect 401). SUT has no authenticateToken -> 200.",
+                  "  pm.response.to.have.status(200); // ACTUAL (buggy) — BugReport BUG-C3",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"BIGBUY\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-25 SQLi in code neutralized (SEC-05)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"404 (no injection)\", function () {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE10' OR '1'='1\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "C-27 success response schema",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"has required keys\", function () {",
+                  "  var j = pm.response.json();",
+                  "  ['success','coupon_id','discount_amount','final_amount','message'].forEach(function(k){ pm.expect(j).to.have.property(k); });",
+                  "});",
+                  "pm.test(\"invariant final = total - discount\", function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.final_amount).to.eql(600000 - j.discount_amount);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/apply-coupon",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "apply-coupon"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"BIGBUY\",\n  \"total_amount\": 600000,\n  \"user_id\": 2\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - API3 Product CRUD (FR-15)",
+      "item": [
+        {
+          "name": "PR-01 create product (admin, happy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 + id\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.id).to.be.a('number');",
+                  "  pm.environment.set('newProductId', j.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ao Thun QA\",\n  \"price\": 150000,\n  \"description\": \"test\",\n  \"imageUrl\": \"\",\n  \"category_id\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "PR-02 get created product (schema)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"matches created\", function () {",
+                  "  var p = pm.response.json();",
+                  "  pm.expect(p.name).to.eql('Ao Thun QA');",
+                  "  pm.expect(Number(p.price)).to.eql(150000);",
+                  "  pm.expect(p.category_id).to.eql(3);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{newProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{newProductId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-03 update price (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{newProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{newProductId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ao Thun QA\",\n  \"price\": 175000,\n  \"description\": \"test\",\n  \"imageUrl\": \"\",\n  \"category_id\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "PR-04 delete then 404 (lifecycle)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 deleted\", function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{newProductId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{newProductId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-19 create with USER token -> should 403 (SEC-03) [BUG-PR1]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-PR1: no role check, non-admin can create\", function () {",
+                  "  // SPEC: 403. SUT has no auth on write endpoints -> 200.",
+                  "  pm.response.to.have.status(200); // ACTUAL (buggy) — BugReport BUG-PR1",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{userToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"hack\",\n  \"price\": 1,\n  \"category_id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PR-20 create with NO token (SEC-02) [BUG-PR1]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-PR1: no token still creates\", function () {",
+                  "  pm.response.to.have.status(200); // ACTUAL (buggy) — spec wants 401",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"noauth\",\n  \"price\": 1,\n  \"category_id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PR-13 negative price accepted [BUG-PR2]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-PR2: no price>0 validation\", function () {",
+                  "  pm.response.to.have.status(200); // ACTUAL (buggy) — spec wants 400",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"bad\",\n  \"price\": -5000,\n  \"category_id\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "PR-25 SQLi in search returns all rows [BUG-PR3]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-PR3: injection returns full table\", function () {",
+                  "  var rows = pm.response.json();",
+                  "  pm.expect(rows).to.be.an('array');",
+                  "  pm.expect(rows.length).to.be.above(1); // ACTUAL: injection leaks all rows",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?search=' OR '1'='1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products?search=' OR '1'='1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-26 DROP attempt does not destroy table (SEC-05 guard)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"responds without 500-crash of table\", function () {",
+                  "  pm.expect([200,500]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?search='; DROP TABLE products;--",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products?search='; DROP TABLE products;--"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-26b products table still populated",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"table intact\", function () {",
+                  "  pm.expect(pm.response.json().length).to.be.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-31 missing id returns 200 {} not 404 [BUG-PR4]",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"BUG-PR4: 200 empty object\", function () {",
+                  "  pm.response.to.have.status(200); // ACTUAL — spec wants 404",
+                  "  pm.expect(Object.keys(pm.response.json()).length).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "99999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PR-28 list schema",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"array of typed products\", function () {",
+                  "  var a = pm.response.json();",
+                  "  pm.expect(a).to.be.an('array');",
+                  "  pm.expect(a[0]).to.have.property('id');",
+                  "  pm.expect(a[0]).to.have.property('name');",
+                  "  pm.expect(a[0]).to.have.property('price');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

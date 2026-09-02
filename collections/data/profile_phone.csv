@@ -1,0 +1,8 @@
+phone,valid,note
+0123456789,true,10 digits min valid
+01234567890,true,11 digits max valid
+012345678,false,9 digits below min
+012345678901,false,12 digits above max
+0912a45678,false,contains letter
+9912345678,false,not starting 0
+,false,empty
