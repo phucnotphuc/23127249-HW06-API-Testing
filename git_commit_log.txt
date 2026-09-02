@@ -25,3 +25,17 @@ hw6(docs): main report + AI audit + AI critique + README + git log
 Actual log (paste output of `git log --oneline -14` after make_commits.sh)
 --------------------------------------------------------------------------
 <fill after running make_commits.sh>
+
+Actual log:
+e0a6cc3 hw6(ci): restore green default after failing-run demo
+9560f5f hw6(ci): demonstrate failing test (BUG-C1) — flip COLLECTION to FAIL
+4bf67dc hw6(docs): main report + AI audit + AI critique + git log + helpers
+c6ec8b4 hw6(ci): newman all-pass pipeline + CI/CD report
+e16aced hw6(gen): AI test-generator design + reusable agent skill
+def7b1e hw6(bugs): 12-defect bug report + GitHub issue script
+8f74321 hw6(exec): Newman green run + HTML report + test summary
+9b8ced4 hw6(exec): Postman collection (+FAIL) + environment + data files
+52b2861 hw6(api3): product CRUD test cases + consolidated index CSV
+ba81b7f hw6(api2): coupon test cases — generate + audit + 5 extensions
+291729d hw6(api1): profile test cases — generate + audit + 5 extensions
+d580e72 hw6: scaffold structure + newman tooling + CI workflow

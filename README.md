@@ -65,11 +65,12 @@ Newman + htmlextra + JUnit reporters. (Monitor / Mock server: documented in Main
 | 4 | Agent Skill (test generator) | 10 | 9 |
 | | **Total** | **100** | **90** |
 
-**Public repo:** _paste GitHub URL_ · **CI runs:** _paste 2 Actions URLs_ · **Demo video (optional):** _paste YouTube URL_.
+**Public repo:** https://github.com/phucnotphuc/23127249-HW06-API-Testing
+**CI runs:** [all-pass](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) · [one-fail (BUG-C1)](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261) · **Demo video (optional):** _paste YouTube URL_.
 
 ## Outstanding human steps
-1. `git push` the two CI commits; screenshot green + red runs (`ci/CI-CD-Report.md`).
-2. `gh auth login` then `bash bugs/create_issues.sh`; paste issue #s into `bugs/BugReport.md`.
+1. ~~Push CI commits + runs~~ — **done**: [green](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) + [red](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261). Screenshot both for the PDF.
+2. `bash bugs/create_issues.sh` (gh already authed); paste issue #s into `bugs/BugReport.md`.
 3. Export `diagrams/generator.png` from your own drawing (anti-cheat §11).
 4. Screenshot the Postman/Newman console showing `X-Student-Id: 23127249`.
 5. Convert `Main_Report.md`, AI audit, AI critique to PDF; set final grade in filename.

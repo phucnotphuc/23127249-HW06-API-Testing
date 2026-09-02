@@ -31,7 +31,7 @@ The only difference is the `COLLECTION` env var at the top of the workflow.
   ```
 - Commit message: `hw6(ci): newman all-pass run`.
 - **Screenshot:** `ci/screenshots/run-a-pass.png` (green check on Actions).
-- **Run link:** _paste Actions run URL after push._
+- **Run link:** https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070 (status: success).
 
 ### Run B — one test fails (red commit)
 - Change one line: `COLLECTION: eshop-hw06-FAIL.postman_collection.json`.
@@ -43,7 +43,7 @@ The only difference is the `COLLECTION` env var at the top of the workflow.
   ```
 - Commit message: `hw6(ci): demonstrate failing test (BUG-C1)`.
 - **Screenshot:** `ci/screenshots/run-b-fail.png` (red X on Actions).
-- **Run link:** _paste Actions run URL after push._
+- **Run link:** https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261 (status: failure — C-03 assertion `expected -4500000 to deeply equal 50000`).
 
 ## Steps for you to execute (human)
 
