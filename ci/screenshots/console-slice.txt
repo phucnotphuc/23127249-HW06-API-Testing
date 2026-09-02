@@ -1,0 +1,63 @@
+newman
+
+EShop HW06 API Tests (23127249)
+
+□ 00 - Setup (auth)
+└ Login User -> userToken
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/login [200 OK, 635B, 258ms]
+  √  status 200
+  √  token captured
+
+└ Login Admin -> adminToken
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/login [200 OK, 640B, 5ms]
+  √  status 200
+  √  admin token captured
+
+□ 01 - API1 Profile (FR-04)
+└ P-01 PUT valid profile (happy)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [200 OK, 296B, 10ms]
+  √  200
+  √  message present
+
+└ P-02 GET me returns profile (happy+schema)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/users/me [200 OK, 470B, 4ms]
+  √  200
+  √  core fields typed
+
+└ P-03/EX-P1 GET me must NOT leak secrets (SEC-01) [BUG-P1]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/users/me [200 OK, 470B, 4ms]
+  √  BUG-P1 documented: password leaked
+
+└ P-21 PUT no token -> 401 (SEC-02)
+   ... (all 33 requests inject the header) ...
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                33 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                33 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                34 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                41 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 3.1s                                       │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 8.06kB (approx)                           │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 13ms [min: 1ms, max: 258ms, s.d.: 43ms] │
+└────────────────────────────────────────────────────────────────┘

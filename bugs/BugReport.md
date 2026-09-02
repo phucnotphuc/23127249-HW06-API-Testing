@@ -115,18 +115,18 @@ Get a token: `TOK=$(curl -s -X POST localhost:3000/api/login -H Content-Type:app
 
 | ID | API | Severity | SEC | Newman test | GitHub Issue |
 |----|-----|----------|-----|-------------|--------------|
-| BUG-P2 | Profile | Critical | SEC-06 | P-18/P-20 | _#TBD_ |
-| BUG-C1 | Coupon | Critical | — | C-03 | _#TBD_ |
-| BUG-PR1 | Product | Critical | SEC-02/03 | PR-19/PR-20 | _#TBD_ |
-| BUG-P1 | Profile | High | SEC-01 | P-03 | _#TBD_ |
-| BUG-C3 | Coupon | High | SEC-02 | C-22 | _#TBD_ |
-| BUG-C4 | Coupon | High | — | EX-C3 | _#TBD_ |
-| BUG-PR3 | Product | High | SEC-05 | PR-25 | _#TBD_ |
-| BUG-P3 | Profile | Medium | — | P-06.. | _#TBD_ |
-| BUG-C2 | Coupon | Medium | — | C-04 | _#TBD_ |
-| BUG-PR2 | Product | Medium | — | PR-13 | _#TBD_ |
-| BUG-P4 | Profile | Low | — | EX-P4 | _#TBD_ |
-| BUG-PR4 | Product | Low | — | PR-31 | _#TBD_ |
-| BUG-PR5 | Product | Low | — | PR-30 | _#TBD_ |
+| BUG-P2 | Profile | Critical | SEC-06 | P-18/P-20 | [#1](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/1) |
+| BUG-C1 | Coupon | Critical | — | C-03 | [#2](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/2) |
+| BUG-PR1 | Product | Critical | SEC-02/03 | PR-19/PR-20 | [#3](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/3) |
+| BUG-P1 | Profile | High | SEC-01 | P-03 | [#4](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/4) |
+| BUG-C3 | Coupon | High | SEC-02 | C-22 | [#5](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/5) |
+| BUG-C4 | Coupon | High | — | EX-C3 | [#6](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/6) |
+| BUG-PR3 | Product | High | SEC-05 | PR-25 | [#7](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/7) |
+| BUG-P3 | Profile | Medium | — | P-06.. | [#8](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/8) |
+| BUG-C2 | Coupon | Medium | — | C-04 | [#9](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/9) |
+| BUG-PR2 | Product | Medium | — | PR-13 | [#10](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/10) |
+| BUG-P4 | Profile | Low | — | EX-P4 | [#11](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/11) |
+| BUG-PR4 | Product | Low | — | PR-31 | [#12](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/12) |
+| BUG-PR5 | Product | Low | schema | PR-30 | [#13](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues/13) |
 
-**12 distinct defects** (3 Critical, 4 High, 3 Medium, 3 Low). Fill Issue numbers after running `bugs/create_issues.sh`.
+**13 distinct defects** (3 Critical, 4 High, 3 Medium, 3 Low) — all filed as GitHub Issues [#1–#13](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues). Attach a screenshot to each issue.

@@ -6,7 +6,7 @@
 | API2 Coupon | POST /api/apply-coupon | 37 | 37 | 5 | **42** | 10 requests | 4 |
 | API3 Product | POST/PUT/DELETE /api/products | 38 | 38 | 5 | **43** | 12 requests | 5 |
 | Setup | login user/admin | — | — | — | — | 2 requests | — |
-| **Total** | | **113** | **112** | **15** | **127** | **33 req / 41 assert** | **12 distinct** |
+| **Total** | | **113** | **112** | **15** | **127** | **33 req / 41 assert** | **13 distinct** |
 
 ## Newman baseline (green)
 ```

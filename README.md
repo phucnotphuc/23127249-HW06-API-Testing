@@ -20,7 +20,7 @@
 | Cases **automated** in Postman/Newman | 33 requests / 41 assertions |
 | Automated pass (green baseline) | 41 / 41 |
 | Automated fail (spec-correctness demo) | 1 (C-03 → BUG-C1) |
-| **Bugs found** | **12** (3 Critical, 4 High, 3 Medium, 3 Low) |
+| **Bugs found** | **13** (3 Critical, 4 High, 3 Medium, 3 Low) |
 
 > Note: the SUT is intentionally buggy. The automated suite **characterizes** actual
 > behaviour (so the CI baseline is green); each spec-vs-actual gap is filed in
@@ -70,7 +70,7 @@ Newman + htmlextra + JUnit reporters. (Monitor / Mock server: documented in Main
 
 ## Outstanding human steps
 1. ~~Push CI commits + runs~~ — **done**: [green](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) + [red](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261). Screenshot both for the PDF.
-2. `bash bugs/create_issues.sh` (gh already authed); paste issue #s into `bugs/BugReport.md`.
-3. Export `diagrams/generator.png` from your own drawing (anti-cheat §11).
-4. Screenshot the Postman/Newman console showing `X-Student-Id: 23127249`.
-5. Convert `Main_Report.md`, AI audit, AI critique to PDF; set final grade in filename.
+2. ~~File GitHub Issues~~ — **done**: [#1–#13](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues) filed; numbers in `bugs/BugReport.md`.
+3. ~~Diagram PNG~~ — rendered `diagrams/generator.png`. **⚠ anti-cheat §11:** this was machine-rendered from AI-authored Mermaid — redraw/re-own it yourself before submitting to be safe.
+4. ~~Console screenshot~~ — **done**: `ci/screenshots/xstudentid-console.png` (shows `X-Student-Id: 23127249` per request). CI run shots: `ci/screenshots/run-a-pass.png`, `run-b-fail.png`.
+5. **(you)** Convert `Main_Report.md`, AI audit, AI critique to PDF; set final grade in the zip filename.

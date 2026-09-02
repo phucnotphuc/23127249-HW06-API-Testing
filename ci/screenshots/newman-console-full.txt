@@ -1,0 +1,266 @@
+newman
+
+EShop HW06 API Tests (23127249)
+
+□ 00 - Setup (auth)
+└ Login User -> userToken
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/login [200 OK, 635B, 258ms]
+  √  status 200
+  √  token captured
+
+└ Login Admin -> adminToken
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/login [200 OK, 640B, 5ms]
+  √  status 200
+  √  admin token captured
+
+□ 01 - API1 Profile (FR-04)
+└ P-01 PUT valid profile (happy)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [200 OK, 296B, 10ms]
+  √  200
+  √  message present
+
+└ P-02 GET me returns profile (happy+schema)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/users/me [200 OK, 470B, 4ms]
+  √  200
+  √  core fields typed
+
+└ P-03/EX-P1 GET me must NOT leak secrets (SEC-01) [BUG-P1]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/users/me [200 OK, 470B, 4ms]
+  √  BUG-P1 documented: password leaked
+
+└ P-21 PUT no token -> 401 (SEC-02)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [401 Unauthorized, 301B, 3ms]
+  √  401
+
+└ P-22 PUT bad token -> 403 (SEC-02, corrected)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [403 Forbidden, 295B, 3ms]
+  √  403
+
+└ P-18 role escalation blocked (SEC-06) [BUG-P2]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [200 OK, 296B, 11ms]
+  √  PUT accepted
+  √  BUG-P2: role should stay user (spec) — checked next request
+
+└ P-20 verify role after escalation attempt [BUG-P2 evidence]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/users/me [200 OK, 454B, 5ms]
+  √  BUG-P2 documented: role changed to admin (buggy)
+
+└ P-25 SQLi in name is neutralized (SEC-05)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/users/me [200 OK, 296B, 8ms]
+  √  200 and users table survives
+
+└ P-25b verify users table intact after SQLi
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/login [200 OK, 665B, 3ms]
+  √  login still works -> table intact
+
+□ 02 - API2 Coupon (FR-09)
+└ C-01 BIGBUY fixed 50k (happy)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [200 OK, 399B, 30ms]
+  √  200
+  √  fixed discount 50000, final 550000
+
+└ C-02 VIP100 fixed 100k (happy)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [200 OK, 401B, 3ms]
+  √  discount 100000, final 300000
+
+└ C-03 SAVE10 percent (math)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [200 OK, 396B, 3ms]
+  √  200
+  √  C-03 percent response shape present (characterized) [BUG-C1]
+
+└ C-04 boundary total==min 300000 (>= per spec) [BUG-C2]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [400 Bad Request, 374B, 3ms]
+  √  BUG-C2 documented: SUT uses > so equal is rejected (400)
+
+└ C-08 unknown code -> 404 (C1)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [404 Not Found, 353B, 4ms]
+  √  404
+
+└ C-09 EXPIRED -> 400 (C2)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [400 Bad Request, 320B, 3ms]
+  √  400 expired
+
+└ C-10 empty code -> 400
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [400 Bad Request, 320B, 1ms]
+  √  400
+
+└ C-22 no auth accepted (SEC-02) [BUG-C3]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [200 OK, 399B, 2ms]
+  √  BUG-C3: endpoint applies without any JWT
+
+└ C-25 SQLi in code neutralized (SEC-05)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [404 Not Found, 353B, 2ms]
+  √  404 (no injection)
+
+└ C-27 success response schema
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/apply-coupon [200 OK, 399B, 3ms]
+  √  has required keys
+  √  invariant final = total - discount
+
+□ 03 - API3 Product CRUD (FR-15)
+└ PR-01 create product (admin, happy)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/products [200 OK, 303B, 8ms]
+  √  200 + id
+
+└ PR-02 get created product (schema)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products/6 [200 OK, 363B, 3ms]
+  √  matches created
+
+└ PR-03 update price (admin)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  PUT http://localhost:3000/api/products/6 [200 OK, 296B, 8ms]
+  √  200
+
+└ PR-04 delete then 404 (lifecycle)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  DELETE http://localhost:3000/api/products/6 [200 OK, 296B, 8ms]
+  √  200 deleted
+
+└ PR-19 create with USER token -> should 403 (SEC-03) [BUG-PR1]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/products [200 OK, 303B, 8ms]
+  √  BUG-PR1: no role check, non-admin can create
+
+└ PR-20 create with NO token (SEC-02) [BUG-PR1]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/products [200 OK, 303B, 8ms]
+  √  BUG-PR1: no token still creates
+
+└ PR-13 negative price accepted [BUG-PR2]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  POST http://localhost:3000/api/products [200 OK, 303B, 8ms]
+  √  BUG-PR2: no price>0 validation
+
+└ PR-25 SQLi in search returns all rows [BUG-PR3]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products?search=' OR '1'='1 [200 OK, 1.5kB, 5ms]
+  √  BUG-PR3: injection returns full table
+
+└ PR-26 DROP attempt does not destroy table (SEC-05 guard)
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products?search='; DROP TABLE products;-- [200 OK, 1.5kB, 4ms]
+  √  responds without 500-crash of table
+
+└ PR-26b products table still populated
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products [200 OK, 1.5kB, 3ms]
+  √  table intact
+
+└ PR-31 missing id returns 200 {} not 404 [BUG-PR4]
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products/99999 [200 OK, 267B, 2ms]
+  √  BUG-PR4: 200 empty object
+
+└ PR-28 list schema
+  ┌
+  │ 'X-Student-Id: 23127249'
+  └
+  GET http://localhost:3000/api/products [200 OK, 1.5kB, 2ms]
+  √  array of typed products
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                33 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                33 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                34 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                41 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 3.1s                                       │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 8.06kB (approx)                           │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 13ms [min: 1ms, max: 258ms, s.d.: 43ms] │
+└────────────────────────────────────────────────────────────────┘
