@@ -1,6 +1,7 @@
 # Demo video script (optional G9.5 bonus) — ~4 min
 
-Record generating the **coupon** suite end-to-end; upload to YouTube; paste link in README.
+YouTube video link: https://youtu.be/ekSnALQ9E4A
+Generated **coupon** suite end-to-end demo walkthrough:
 
 1. **0:00 Intro (15s)** — "HW06, student 23127249. Demonstrating the eshop-api-test-generator skill on `POST /api/apply-coupon`."
 2. **0:15 Show spec (20s)** — open `api_specification.md` §5; point at the 5 conditions + formula.

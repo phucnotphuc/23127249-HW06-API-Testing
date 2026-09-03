@@ -95,6 +95,6 @@ def bind_oracle(sc, schema_pack):
 Implemented under `skills/eshop-api-test-generator/`. The rule packs are the reusable
 core — point the skill at any EShop-style spec and it re-runs stages 1–9.
 
-## Demo video (optional, G9.5 bonus)
-Script in `skills/eshop-api-test-generator/references/demo-script.md`; record it
-generating the coupon suite end-to-end, upload to YouTube, paste link in README.
+## Demo video (G9.5 bonus)
+Demonstration video published at: https://youtu.be/ekSnALQ9E4A
+Walkthrough script available in `skills/eshop-api-test-generator/references/demo-script.md`.

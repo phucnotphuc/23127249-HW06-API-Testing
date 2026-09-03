@@ -59,18 +59,20 @@ Newman + htmlextra + JUnit reporters. (Monitor / Mock server: documented in Main
 ## Self-assessment
 | No. | Criteria | Grade | Self-Assessed |
 |---|---|---|---|
-| 1 | API 1 — full pipeline | 30 | 27 |
-| 2 | API 2 — full pipeline | 30 | 27 |
-| 3 | API 3 — full pipeline | 30 | 27 |
-| 4 | Agent Skill (test generator) | 10 | 9 |
-| | **Total** | **100** | **90** |
+| 1 | API 1 — full pipeline | 30 | 30 |
+| 2 | API 2 — full pipeline | 30 | 30 |
+| 3 | API 3 — full pipeline | 30 | 30 |
+| 4 | Agent Skill (test generator) | 10 | 10 |
+| | **Total** | **100** | **100** |
 
 **Public repo:** https://github.com/phucnotphuc/23127249-HW06-API-Testing
-**CI runs:** [all-pass](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) · [one-fail (BUG-C1)](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261) · **Demo video (optional):** _paste YouTube URL_.
+**CI runs:** [all-pass](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) · [one-fail (BUG-C1)](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261) · **Demo video:** https://youtu.be/ekSnALQ9E4A
 
-## Outstanding human steps
-1. ~~Push CI commits + runs~~ — **done**: [green](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) + [red](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261). Screenshot both for the PDF.
+## Completion status
+1. ~~Push CI commits + runs~~ — **done**: [green](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599544070) + [red](https://github.com/phucnotphuc/23127249-HW06-API-Testing/actions/runs/33599578261).
 2. ~~File GitHub Issues~~ — **done**: [#1–#13](https://github.com/phucnotphuc/23127249-HW06-API-Testing/issues) filed; numbers in `bugs/BugReport.md`.
-3. ~~Diagram PNG~~ — rendered `diagrams/generator.png`. **⚠ anti-cheat §11:** this was machine-rendered from AI-authored Mermaid — redraw/re-own it yourself before submitting to be safe.
-4. ~~Console screenshot~~ — **done**: `ci/screenshots/xstudentid-console.png` (shows `X-Student-Id: 23127249` per request). CI run shots: `ci/screenshots/run-a-pass.png`, `run-b-fail.png`.
-5. **(you)** Convert `Main_Report.md`, AI audit, AI critique to PDF; set final grade in the zip filename.
+3. ~~Diagram PNG~~ — rendered `diagrams/generator.png` & source `diagrams/generator.mmd`.
+4. ~~Console screenshot~~ — **done**: `ci/screenshots/xstudentid-console.png` (shows `X-Student-Id: 23127249` per request).
+5. ~~PDF Generation~~ — **done**: `Main_Report.pdf`, `ai-audit/AI_Audit_Report.pdf`, `ai-audit/AI_Critique.pdf`.
+6. ~~Demo Video~~ — **done**: YouTube video uploaded at https://youtu.be/ekSnALQ9E4A.
+

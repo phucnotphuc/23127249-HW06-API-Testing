@@ -94,9 +94,9 @@ GitHub-issue bodies in `bugs/create_issues.sh`.
 ## 7. AI-driven generator (G9.5)
 
 Design + pseudocode: `diagrams/generator-design.md`; self-drawn diagram source
-`diagrams/generator.mmd` (render/redraw to `generator.png` before submission). Reusable
+`diagrams/generator.mmd` (rendered to `diagrams/generator.png`). Reusable
 implementation: the Agent Skill in `skills/eshop-api-test-generator/` with Security/State/
-Schema rule packs and stage prompts. Optional demo-video script included.
+Schema rule packs and stage prompts. Demonstration video published at: https://youtu.be/ekSnALQ9E4A.
 
 ## 8. What AI got wrong (summary; full critique in appendix)
 
