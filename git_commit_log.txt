@@ -22,11 +22,13 @@ hw6(ci): newman all-pass run
 hw6(ci): demonstrate failing test (BUG-C1)
 hw6(docs): main report + AI audit + AI critique + README + git log
 
-Actual log (paste output of `git log --oneline -14` after make_commits.sh)
+Actual log (output of `git log --oneline`):
 --------------------------------------------------------------------------
-<fill after running make_commits.sh>
-
-Actual log:
+464586f hw6(final): self-assessment grade 100, add YouTube video link, OpenAPI 3.0 spec
+9bebe6f hw6(audit): regenerate AI_Audit_Report from session log (verbatim prompts, UTC+7) via extract-audit.mjs
+32e1113 hw6(docs): tool guide + review todo + demo/defense video script
+f9a6326 hw6(evidence): generator PNG, CI + X-Student-Id console screenshots, issue #s (13 bugs)
+a6770fa hw6(docs): add repo + CI run URLs; fill actual commit log
 e0a6cc3 hw6(ci): restore green default after failing-run demo
 9560f5f hw6(ci): demonstrate failing test (BUG-C1) — flip COLLECTION to FAIL
 4bf67dc hw6(docs): main report + AI audit + AI critique + git log + helpers
